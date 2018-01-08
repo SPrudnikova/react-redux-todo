@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {NavLink} from "react-router-dom";
 
-import './index.css';
+import './index.scss';
 import {connect} from "react-redux";
 import {logoutUser, addNewTodo} from "../../actions";
 
