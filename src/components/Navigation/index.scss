@@ -1,17 +1,23 @@
-.navigation_main {
-    width: 150px;
-}
+@import "../../styles/colors";
 
-.navigation_main_active-link {
-    color: #0089b9;
-    font-weight: bold;
+.navigation_main {
+  width: 150px;
 }
 
 .navigation_main_link {
-    padding: 5px;
-    display: block;
+  color: $primary-color;
+  padding: 5px;
+  display: block;
+  &:hover {
+    color: $link-hover-color;
+    background-color: rgba(206, 221, 226, 0.5);
+  }
 }
 
-.navigation_main_link:hover {
-    background-color: rgba(206, 221, 226, 0.5);
+.navigation_main_active-link {
+  color: $primary-color;
+  font-weight: bold;
+  &:hover {
+    color: $primary-color;
+  }
 }

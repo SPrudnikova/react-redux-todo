@@ -1,47 +1,17 @@
-import React, {Component} from 'react';
-import {connect} from "react-redux";
+import React from 'react';
 import {NavLink} from "react-router-dom";
 
-import {loginUser} from "../../../actions";
+import LoginForm from "scenes/AuthModule/LoginScene/LoginForm";
 
-class LoginScene extends Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: '',
-      password: ''
-    }
-  }
-
-  render() {
-    return (
-      <div>
-        <input placeholder='login'
-               onChange={(event) => this.setState({...this.state, username: event.target.value})}/>
-        <input placeholder='password'
-               onChange={(event) => this.setState({...this.state, password: event.target.value})}/>
-        <button onClick={this.onLogin}>login</button>
-
-        <NavLink to='/register'>Register</NavLink>
-      </div>
-    );
-  }
-
-  onLogin = () => {
-    this.props.onLogin(this.state);
-  }
-
-}
-
-const AuthSceneContainer = (props) => {
-  const onLogin = (data) => {
-    return props.loginUser(data);
-  };
-
-  return <LoginScene onLogin={onLogin}/>;
+const LoginScene = (props) => {
+  return (
+    <div>
+      <LoginForm />
+      <NavLink to='/register'>Register</NavLink>
+    </div>
+  )
 };
 
-const mapDispatchToProps = {loginUser};
+export default LoginScene;
 
-export default connect(null, mapDispatchToProps)(AuthSceneContainer);
+

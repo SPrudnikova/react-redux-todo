@@ -1,0 +1,59 @@
+@import "colors";
+
+.root {
+  display: flex;
+  padding: 15px;
+}
+
+.root_scene-layout {
+  flex: 1;
+}
+
+.message-subject {
+  margin: 0 30px;
+}
+
+/*===============typography======================*/
+
+ul {
+  list-style: none;
+}
+
+p, div, ul, li {
+  padding: 0;
+  margin: 0;
+}
+
+p, a, span {
+  font-family: "Roboto", "Helvetica Neue", "Arial", sans-serif;
+  font-size: 16px;
+  color: $primary-font-color;
+}
+
+a {
+  text-decoration: none;
+}
+
+.font-largest {
+  font-size: 30px;
+}
+
+.font-large {
+  font-size: 20px;
+}
+
+.font-medium {
+  font-size: 16px;
+}
+
+.font-small {
+  font-size: 12px;
+}
+
+.font-smallest {
+  font-size: 9px;
+}
+
+.font-bold {
+  font-weight: bold;
+}

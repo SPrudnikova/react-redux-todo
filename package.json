@@ -1,7 +1,7 @@
 {
-  "name": "mail",
+  "name": "todo",
   "version": "0.1.0",
-  "private": true,
+  "public": true,
   "dependencies": {
     "autoprefixer": "7.1.6",
     "axios": "^0.17.1",
@@ -54,6 +54,7 @@
     "react-router-dom": "^4.2.2",
     "react-router-redux": "^5.0.0-alpha.6",
     "redux": "^3.7.2",
+    "redux-form": "^7.2.0",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
     "sw-precache-webpack-plugin": "0.11.4",

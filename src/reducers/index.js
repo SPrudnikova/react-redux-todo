@@ -1,5 +1,6 @@
 import {combineReducers} from 'redux';
 import {routerReducer} from 'react-router-redux';
+import { reducer as formReducer } from 'redux-form';
 
 import Todos from './Todos';
 import SelectedTodo from './SelectedTodo';
@@ -11,7 +12,8 @@ const appReducer = combineReducers({
   Todos,
   SelectedTodo,
   User,
-  routerReducer
+  routerReducer,
+  form: formReducer
 });
 
 const rootReducer = (state, action) => {
