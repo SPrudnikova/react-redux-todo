@@ -1,14 +1,14 @@
 export const MAIN_NAVIGATION = [
   {
-    title: 'Inbox',
+    title: 'In progress',
     key: 'inbox'
   },
   {
-    title: 'Trash',
+    title: 'Open',
     key: 'trash'
   },
   {
-    title: 'Sent',
+    title: 'Done',
     key: 'sent'
   },
 ];

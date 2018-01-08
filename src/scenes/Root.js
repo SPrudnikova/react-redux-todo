@@ -2,44 +2,29 @@ import React from 'react';
 import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
-import {routerMiddleware, ConnectedRouter} from 'react-router-redux';
-import {Route, Redirect, Switch} from 'react-router-dom';
+import {routerMiddleware, ConnectedRouter } from 'react-router-redux';
 import createBrowserHistory from 'history/createBrowserHistory';
-import InboxScene from './InboxScene';
+import logger from 'redux-logger'
+
 import reducer from '../reducers/index';
-import {MAIN_NAVIGATION} from "../const/navigation-items";
-import Navigation from "../components/Navigation";
-import SentScene from "./SentScene";
-import TrashScene from "./TrashScene";
-import ErrorScene from "./ErrorScene";
+import SelectModules from "./SelectModules";
 
 
 const history = createBrowserHistory();
-const enhancer = applyMiddleware(thunk, routerMiddleware(history));
+const enhancer = applyMiddleware(thunk, routerMiddleware(history), logger);
 const store = createStore(reducer, {}, enhancer);
 
-const Root = () => {
-  return (
-    <Provider store={store}>
-      <ConnectedRouter history={history}>
-        <div className="root">
-          <Navigation navItems={MAIN_NAVIGATION}/>
-          <div className="root_scene-layout">
-            <Switch>
-              <Route path="/inbox" component={InboxScene}/>
-              <Route path="/sent" component={SentScene}/>
-              <Route path="/trash" component={TrashScene}/>
+class Root extends React.Component {
 
-              <Route path="/error" component={ErrorScene}/>
-
-              <Redirect from="/" to="/inbox" exact/>
-              <Redirect from="*" to="/error"/>
-            </Switch>
-          </div>
-        </div>
-      </ConnectedRouter>
-    </Provider>
-  );
-};
+  render () {
+    return (
+      <Provider store={store}>
+        <ConnectedRouter history={history}>
+          <SelectModules {...this.props}/>
+        </ConnectedRouter>
+      </Provider>
+    );
+  }
+}
 
 export default Root;

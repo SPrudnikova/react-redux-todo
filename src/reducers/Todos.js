@@ -1,16 +1,20 @@
 import {List, Record} from 'immutable'
 
 import {
-  FETCHING_MAILS,
+  FETCHING_TODOS,
   START,
   SUCCESS,
-  FAIL
+  FAIL, ADD_TODO
 } from '../actions/ActionTypes';
 
-const EmailRecord = Record({
-  date: '',
-  sender: '',
-  subject: '',
+const TodoRecord = Record({
+  dateStart: '',
+  dateEnd: '',
+  title: '',
+  description: '',
+  userId: '',
+  status: '',
+  priority: '',
   _id: ''
 });
 
@@ -24,17 +28,17 @@ const initialState = new ReducerState();
 
 const MessagesData = (state = initialState, {type, payload}) => {
   switch (type) {
-    case FETCHING_MAILS + START:
+    case FETCHING_TODOS + START:
       return state.withMutations(s => s.set('loading', true));
 
-    case FETCHING_MAILS + SUCCESS:
+    case FETCHING_TODOS + SUCCESS:
       return state.withMutations(s => {
         return s
           .set('loading', false)
-          .set('data', state.data.concat(payload.map(email => new EmailRecord(email))))
+          .set('data', state.data.concat(payload.map(todo => new TodoRecord(todo))))
       });
 
-    case FETCHING_MAILS + FAIL:
+    case FETCHING_TODOS + FAIL:
       return state.withMutations(s => s.set('loading', false).set('error', payload));
 
     default:

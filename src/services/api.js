@@ -1,12 +1,16 @@
 const API_URL = 'http://localhost:3001/api/';
 
-const postJSON = {
-  method: "POST",
-  headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'
+const postJSON = () => {
+  return {
+    method: "POST",
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('sampleToken')
+    }
   }
 };
+
 const putJSON = {
   method: "PUT",
   headers: {
@@ -29,7 +33,7 @@ function checkStatus(response) {
     return Promise.resolve(response);
   } else {
     if (response.status === 401) {
-      console.log('error 401', response);
+      return Promise.reject(new Error("Your access token has expired. Please login again."));
     }
     console.log("API error", response);
     return response.json()
@@ -63,4 +67,25 @@ export function fetchData(url) {
       }
       return json.data;
     });
+}
+
+export function postData(url, opts = {}, params = {}) {
+  const options = {};
+  Object.assign(options, postJSON());
+  options.body = JSON.stringify(opts);
+  console.log("Post Data", opts);
+  let paramsURL = Object.keys(params).length > 0 ? `&${encodeParams(params)}` : '';
+  console.log("Post url", `${API_URL}${url}?${paramsURL}`, options);
+  return fetch(`${API_URL}${url}?${paramsURL}`, options)
+    .then(checkStatus)
+    .then((response) => response.json())
+    .then((json) => {
+      console.log("POST Response Data", json);
+      if (json.error) {
+        let error = new Error(json.error);
+        error.message = json.error;
+        throw error;
+      }
+      return json.data ? json.data : json;
+    })
 }

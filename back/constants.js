@@ -1,0 +1,1 @@
+module.exports.SECRET_KEY = 'SD21feew5af1rew3sAFRfef4uk46hjk79OKM54jhfYB5481';

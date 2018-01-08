@@ -1,8 +1,25 @@
 import {combineReducers} from 'redux';
-import MessagesData from './MessagesData';
-import SelectedMail from './SelectedMail';
+import {routerReducer} from 'react-router-redux';
 
-export default combineReducers({
-  MessagesData,
-  SelectedMail
+import Todos from './Todos';
+import SelectedTodo from './SelectedTodo';
+import User from './User';
+import {USER_LOGOUT, SUCCESS} from '../actions/ActionTypes';
+
+
+const appReducer = combineReducers({
+  Todos,
+  SelectedTodo,
+  User,
+  routerReducer
 });
+
+const rootReducer = (state, action) => {
+  if (action.type === USER_LOGOUT + SUCCESS) {
+    state = undefined
+  }
+
+  return appReducer(state, action)
+};
+
+export default rootReducer;

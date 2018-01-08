@@ -1,11 +1,17 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const {ShortEmail, EmailModel} = require('../models/email');
+
+const passport = require("./services/auth");
+const router = require('./router');
+
 
 const app = express();
+app.use(passport.initialize());
 const port = process.env.API_PORT || 3001;
 
+mongoose.Promise = Promise;
+mongoose.set('debug', true);
 mongoose.connect('mongodb://127.0.0.1:27017/mailAppDb', err => console.log(err));
 
 app.use(bodyParser.urlencoded({extended: true}));
@@ -16,46 +22,18 @@ app.use(function (req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');
+  res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization');
   res.setHeader('Cache-Control', 'no-cache');
   next();
 });
-
 
 //set the route path & initialize the API
 app.get('/api', function (req, res) {
   res.json({message: 'API Initialized!'});
 });
 
-app.get('/api/emails', function (req, res) {
-  EmailModel.find({}, ShortEmail, (error, emails) => {
-    if (error) {
-      res.send({error: error});
-    } else {
-      res.json({data: emails});
-    }
-  });
-});
-
-app.get('/api/emails/:id', function (req, res) {
-  EmailModel.findOne({_id: req.params.id}, (error, email) => {
-    if (error) {
-      res.send({error: error});
-    } else {
-      res.json({data: email});
-    }
-  });
-  // const newEmail = new Email();
-  // const sender = 'test';
-  // Object.assign(newEmail, req.body, {publishedAt: new Date(), sender,});
-  //
-  // newEmail.save(err => {
-  //   if (err) {
-  //     res.send(err);
-  //   }
-  //   res.end();
-  // });
-});
+// other URLs
+app.use('/', router);
 
 //starts the server and listens for requests
 app.listen(port, function () {

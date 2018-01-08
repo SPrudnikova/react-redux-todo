@@ -1,49 +1,103 @@
 import {replace} from 'react-router-redux';
 
 import {
-  FETCHING_MAILS,
+  FETCHING_TODOS,
   START,
-  SELECT_MAIL,
-  UNSELECT_MAIL,
+  SELECT_TODO,
+  UNSELECT_TODO,
+  ADD_TODO,
+  USER_LOGIN,
+  USER_REGISTER,
+  USER_LOGOUT,
   SUCCESS,
   FAIL
 } from './ActionTypes';
-import {fetchInboxEmailById, fetchInboxEmails} from "../services/InboxEmails";
+import {getUserInProgressTodos, getTodoByUser, addTodo} from "../services/Todos";
+import {userLogin, userRegister, userLogout} from "../services/User";
 
 
-export const getMailsData = () => (dispatch, getState) => {
-  const {MessagesData: {data}} = getState();
-  if (data.size !== 0) return;
+export const getTodosData = () => (dispatch, getState) => {
+  const {Todos} = getState();
+  if (Todos.data.size !== 0) return;
 
-  dispatch({type: FETCHING_MAILS + START,});
+  dispatch({type: FETCHING_TODOS + START});
 
-  return fetchInboxEmails()
+  return getUserInProgressTodos()
     .then(
       response => {
-        dispatch({type: FETCHING_MAILS + SUCCESS, payload: response});
+        dispatch({type: FETCHING_TODOS + SUCCESS, payload: response});
       },
       error => {
-        dispatch({type: FETCHING_MAILS + FAIL, payload: error});
+        dispatch({type: FETCHING_TODOS + FAIL, payload: error});
         dispatch(replace('/error'));
       })
 };
 
-export const selectMail = (id) => dispatch => {
+export const selectTodo = (id) =>(dispatch) => {
+  dispatch({type: SELECT_TODO + START, payload: {id}});
 
-
-  dispatch({type: SELECT_MAIL + START, payload: {id}});
-
-  return fetchInboxEmailById(id)
+  return getTodoByUser(id)
     .then(
       response => {
-        dispatch({type: SELECT_MAIL + SUCCESS, payload: response});
+        dispatch({type: SELECT_TODO + SUCCESS, payload: response});
       },
       error => {
-        dispatch({type: SELECT_MAIL + FAIL, payload: error});
+        dispatch({type: SELECT_TODO + FAIL, payload: error});
         dispatch(replace('/error'));
       })
 };
 
-export const unSelectMail = () => ({
-  type: UNSELECT_MAIL
+export const unSelectTodo = () => ({
+  type: UNSELECT_TODO
 });
+
+export const loginUser = (data) => (dispatch) => {
+  return userLogin(data)
+    .then(response => {
+      dispatch({type: USER_LOGIN + SUCCESS, payload: response});
+      localStorage.setItem('sampleToken', response.token);
+      dispatch(replace('/inbox'));
+    })
+    .catch (err => {
+      console.log('message', err.message);
+      dispatch({type: USER_LOGIN + FAIL});
+    })
+};
+
+export const registerUser = (data) => (dispatch) => {
+  return userRegister(data)
+    .then(response => {
+      dispatch({type: USER_REGISTER + SUCCESS, payload: response});
+      localStorage.setItem('sampleToken', response.token);
+      dispatch(replace('/inbox'));
+    })
+    .catch (err => {
+      console.log('message', err.message);
+      dispatch({type: USER_REGISTER + FAIL});
+    })
+};
+
+export const logoutUser = () => (dispatch) => {
+  return userLogout()
+    .then(res => {
+      localStorage.removeItem('sampleToken');
+      dispatch({type: USER_LOGOUT + SUCCESS});
+      dispatch(replace('/login'));
+    })
+    .catch (err => {
+      console.log('message', err.message);
+      dispatch({type: USER_LOGOUT + FAIL});
+    })
+};
+
+export const addNewTodo = () => dispatch => {
+  debugger
+  return addTodo()
+    .then(res => {
+      dispatch({type: ADD_TODO + SUCCESS});
+    })
+    .catch (err => {
+      console.log('message', err.message);
+      dispatch({type: ADD_TODO + FAIL});
+    })
+};

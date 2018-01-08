@@ -6,13 +6,19 @@
     "axios": "^0.17.1",
     "body-parser": "^1.18.2",
     "concurrently": "^3.5.1",
+    "crypto": "^1.0.1",
     "express": "^4.16.2",
     "history": "^4.7.2",
     "immutable": "^3.8.2",
+    "jsonwebtoken": "^8.1.0",
+    "lodash": "^4.17.4",
     "marked": "^0.3.9",
     "mongodb": "^3.0.1",
     "mongoose": "^5.0.0-rc0",
     "nodemon": "^1.14.7",
+    "passport": "^0.4.0",
+    "passport-jwt": "^3.0.1",
+    "passport-local": "^1.0.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-immutable-proptypes": "^2.1.0",
@@ -21,7 +27,9 @@
     "react-router-redux": "^5.0.0-alpha.6",
     "react-scripts": "1.0.17",
     "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0"
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.2.0",
+    "validator": "^9.2.0"
   },
   "scripts": {
     "start": "concurrently \"npm run front\" \"npm run api\"",
@@ -30,5 +38,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "node-sass": "^4.7.2",
+    "sass-loader": "^6.0.6"
   }
 }
