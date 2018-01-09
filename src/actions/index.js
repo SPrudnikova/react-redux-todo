@@ -33,7 +33,7 @@ export const getTodosData = () => (dispatch, getState) => {
       })
 };
 
-export const selectTodo = (id) =>(dispatch) => {
+export const selectTodo = (id) => (dispatch) => {
   dispatch({type: SELECT_TODO + START, payload: {id}});
 
   return getTodoByUser(id)
@@ -52,28 +52,28 @@ export const unSelectTodo = () => ({
 });
 
 export const loginUser = (data) => (dispatch) => {
+  dispatch({type: USER_LOGIN + START});
   return userLogin(data)
     .then(response => {
       dispatch({type: USER_LOGIN + SUCCESS, payload: response});
       localStorage.setItem('sampleToken', response.token);
-      dispatch(replace('/inbox'));
+      dispatch(replace('/in-progress'));
     })
-    .catch (err => {
-      console.log('message', err.message);
-      dispatch({type: USER_LOGIN + FAIL});
+    .catch(err => {
+      dispatch({type: USER_LOGIN + FAIL, message: err.message});
     })
 };
 
 export const registerUser = (data) => (dispatch) => {
+  dispatch({type: USER_LOGIN + START});
   return userRegister(data)
     .then(response => {
       dispatch({type: USER_REGISTER + SUCCESS, payload: response});
       localStorage.setItem('sampleToken', response.token);
-      dispatch(replace('/inbox'));
+      dispatch(replace('/in-progress'));
     })
-    .catch (err => {
-      console.log('message', err.message);
-      dispatch({type: USER_REGISTER + FAIL});
+    .catch(err => {
+      dispatch({type: USER_REGISTER + FAIL, message: `There is already user with username '${data.username}'`});
     })
 };
 
@@ -84,20 +84,19 @@ export const logoutUser = () => (dispatch) => {
       dispatch({type: USER_LOGOUT + SUCCESS});
       dispatch(replace('/login'));
     })
-    .catch (err => {
+    .catch(err => {
       console.log('message', err.message);
       dispatch({type: USER_LOGOUT + FAIL});
     })
 };
 
 export const addNewTodo = () => dispatch => {
-  debugger
   return addTodo()
     .then(res => {
-      dispatch({type: ADD_TODO + SUCCESS});
+      dispatch({type: ADD_TODO + SUCCESS, message: 'Todo was successfully created'});
     })
-    .catch (err => {
+    .catch(err => {
       console.log('message', err.message);
-      dispatch({type: ADD_TODO + FAIL});
+      dispatch({type: ADD_TODO + FAIL, message: `Todo wasn't created`});
     })
 };

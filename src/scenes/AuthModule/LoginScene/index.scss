@@ -1,0 +1,15 @@
+.login-scene {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  flex-direction: column;
+  width: 40%;
+}
+
+.login-scene_register-block {
+  text-align: center;
+  p {
+    margin-bottom: 5px;
+  }
+}

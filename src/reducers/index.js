@@ -1,6 +1,7 @@
 import {combineReducers} from 'redux';
 import {routerReducer} from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
+import {reducer as notifications} from 'react-notification-system-redux';
 
 import Todos from './Todos';
 import SelectedTodo from './SelectedTodo';
@@ -13,7 +14,8 @@ const appReducer = combineReducers({
   SelectedTodo,
   User,
   routerReducer,
-  form: formReducer
+  form: formReducer,
+  notifications
 });
 
 const rootReducer = (state, action) => {

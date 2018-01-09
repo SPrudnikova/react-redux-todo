@@ -9,8 +9,8 @@ class InboxScene extends Component {
   render() {
     return (
       <NestedRouterLevel>
-        <Route path="/inbox" component={TodosListScene} exact/>
-        <Route path="/inbox/:id" component={TodoScene} exact/>
+        <Route path="/in-progress" component={TodosListScene} exact/>
+        <Route path="/in-progress/:id" component={TodoScene} exact/>
       </NestedRouterLevel>
     );
   }

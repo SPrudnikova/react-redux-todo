@@ -9,6 +9,5 @@ export function getTodoByUser(id) {
 }
 
 export function addTodo (todo={title: "custom", dateStart: '12-12-12', dateEnd: '13-12-12'}) {
-  debugger
   return postData('addTodo', todo);
 }

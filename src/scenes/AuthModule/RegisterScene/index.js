@@ -1,45 +1,22 @@
-import React, {Component} from 'react';
+import React from 'react';
+import {goBack} from 'react-router-redux';
 import {connect} from "react-redux";
 
-import {registerUser} from "../../../actions";
+import RegisterForm from "scenes/AuthModule/RegisterScene/RegisterForm";
+import 'scenes/AuthModule/RegisterScene/index.scss';
+import VerticalDivider from "components/VerticalDivider";
 
-class RegisterScene extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: '',
-      password: ''
-    }
-  }
-
-  render() {
-    return (
-      <div>
-        <input placeholder='login'
-               onChange={(event) => this.setState({...this.state, username: event.target.value})}/>
-        <input placeholder='password'
-               onChange={(event) => this.setState({...this.state, password: event.target.value})}/>
-        <button onClick={this.onRegister}>register</button>
-      </div>
-    );
-  }
-
-  onRegister = () => {
-    this.props.onRegister(this.state);
-  }
-
-}
-
-const RegisterSceneContainer = (props) => {
-  const onRegister = (data) => {
-    return props.registerUser(data);
-  };
-
+const RegisterScene = ({goBack}) => {
   return (
-    <RegisterScene onRegister={onRegister}/>
+    <div className="register-scene">
+      <RegisterForm/>
+      <VerticalDivider height="30px"/>
+      <button className="btn btn-primary btn-fluid font-uppercase" onClick={goBack}>
+        Back
+      </button>
+    </div>
   )
-
 };
 
-export default connect(null, {registerUser})(RegisterSceneContainer);
+export default connect(null, {goBack})(RegisterScene);

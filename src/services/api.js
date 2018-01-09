@@ -33,11 +33,16 @@ function checkStatus(response) {
     return Promise.resolve(response);
   } else {
     if (response.status === 401) {
-      return Promise.reject(new Error("Your access token has expired. Please login again."));
+      return response.json()
+        .then((res) => {
+          throw new Error(res.message)
+        });
+      //return Promise.reject(new Error("Your access token has expired. Please login again."));
+    } else {
+      console.log("API error", response);
+      return response.json()
+        .then((res) => Promise.reject(new Error(res.message)));
     }
-    console.log("API error", response);
-    return response.json()
-      .then((res) => Promise.reject(new Error(res.message)));
   }
 }
 

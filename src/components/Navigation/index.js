@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {NavLink} from "react-router-dom";
+import {NavLink, withRouter} from "react-router-dom";
 
 import './index.scss';
 import {connect} from "react-redux";
@@ -32,6 +32,6 @@ Navigation.propTypes = {
   navItems: PropTypes.array.isRequired,
 };
 
-export default connect(null, {logoutUser, addNewTodo})(Navigation);
+export default withRouter(connect(null, {logoutUser, addNewTodo})(Navigation));
 
 //https://colorscheme.ru/#0841Pw0w0w0w0

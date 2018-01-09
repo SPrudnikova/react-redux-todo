@@ -26,7 +26,7 @@ const ReducerState = new Record({
 
 const initialState = new ReducerState();
 
-const MessagesData = (state = initialState, {type, payload}) => {
+const MessagesData = (state = initialState, {type, payload, message}) => {
   switch (type) {
     case FETCHING_TODOS + START:
       return state.withMutations(s => s.set('loading', true));
@@ -39,7 +39,7 @@ const MessagesData = (state = initialState, {type, payload}) => {
       });
 
     case FETCHING_TODOS + FAIL:
-      return state.withMutations(s => s.set('loading', false).set('error', payload));
+      return state.withMutations(s => s.set('loading', false).set('error', message));
 
     default:
       return state;

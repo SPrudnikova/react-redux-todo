@@ -4,14 +4,15 @@ import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
 import {routerMiddleware, ConnectedRouter } from 'react-router-redux';
 import createBrowserHistory from 'history/createBrowserHistory';
-import logger from 'redux-logger'
+import logger from 'redux-logger';
+import notification from 'middlewares/notification';
 
 import reducer from '../reducers/index';
 import SelectModules from "./SelectModules";
 
 
 const history = createBrowserHistory();
-const enhancer = applyMiddleware(thunk, routerMiddleware(history), logger);
+const enhancer = applyMiddleware(thunk, routerMiddleware(history), notification, logger);
 const store = createStore(reducer, {}, enhancer);
 
 class Root extends React.Component {

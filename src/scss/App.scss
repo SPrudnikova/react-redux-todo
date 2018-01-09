@@ -1,0 +1,125 @@
+@import "colors";
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+.root {
+  display: flex;
+  padding: 15px;
+  flex: 1;
+}
+
+.root_scene-layout {
+  flex: 1;
+  display: flex;
+}
+
+.message-subject {
+  margin: 0 30px;
+}
+
+.notification-container {
+  position: absolute;
+  z-index: 1000;
+  right: 10px;
+}
+
+/*===============typography======================*/
+
+ul {
+  list-style: none;
+}
+
+p, div, ul, li, button, form, input {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+p, a, span, label, div {
+  font-family: "Roboto", "Helvetica Neue", "Arial", sans-serif;
+  color: $primary-font-color;
+}
+
+p, a, span, label {
+  font-size: 16px;
+}
+
+a {
+  text-decoration: none;
+  color: $link-color;
+  cursor: pointer;
+  transition: color 0.2s;
+  &:hover {
+    color: $link-hover-color
+  }
+}
+
+.font-largest {
+  font-size: 30px;
+}
+
+.font-large {
+  font-size: 20px;
+}
+
+.font-medium {
+  font-size: 16px;
+}
+
+.font-small {
+  font-size: 12px;
+}
+
+.font-smallest {
+  font-size: 9px;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+.font-uppercase {
+  text-transform: uppercase;
+}
+
+/*===============buttons======================*/
+.btn {
+  border-radius: 3px;
+  cursor: pointer;
+  padding: 10px 5px;
+  text-align: center;
+  font-family: "Roboto", "Helvetica Neue", "Arial", sans-serif;
+
+  &.btn-fluid {
+    width: 100%;
+  }
+  &.btn-primary {
+    background-color: $primary-color;
+    border: solid darken($primary-color,10%) 1px ;
+    color: #FFF;
+    transition: background-color 0.5s;
+    &:hover {
+      background-color: lighten($primary-color, 5%);
+    }
+  }
+  &:disabled {
+    background-color: $disable-color;
+    border: solid darken($disable-color,10%) 1px ;
+    &:hover {
+      background-color: $disable-color;
+      border: solid darken($disable-color,10%) 1px ;
+    }
+  }
+}

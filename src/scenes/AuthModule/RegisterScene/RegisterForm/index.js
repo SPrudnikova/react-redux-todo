@@ -1,47 +1,47 @@
 import React from 'react';
 import {Field, reduxForm} from "redux-form";
 
-import {loginUser} from "actions";
+import {registerUser} from "actions";
 import {connect} from "react-redux";
 import InputWithLabel from "components/FormElements/InputWithLabel";
 import {required, minLength} from "helpers/validationRules";
 import VerticalDivider from "components/VerticalDivider";
-import "scenes/AuthModule/LoginScene/LoginForm/index.scss"
+import "scenes/AuthModule/RegisterScene/RegisterForm/index.scss"
 
-const LoginForm = (props) => {
+const RegisterForm = (props) => {
   return (
-    <form onSubmit={props.handleSubmit} className="login-scene_form">
+    <form onSubmit={props.handleSubmit} className="register-scene_form">
       <Field name="username" type="text"
              component={InputWithLabel} label="Username"
              validate={[required(), minLength(3)]}
       />
-      <VerticalDivider/>
+      <VerticalDivider />
       <Field name="password" type="text"
              component={InputWithLabel} label="Password"
              validate={[required(), minLength(3)]}
       />
 
-      <VerticalDivider/>
+      <VerticalDivider />
       <button className="btn btn-primary btn-fluid font-uppercase"
               disabled={props.isLoading}
               type="submit">
-        Login
+        Register
       </button>
     </form>
   )
 };
 
-const LoginFormWithRedux = reduxForm({
-  form: 'login',
-})(LoginForm);
+const RegisterFormWithRedux = reduxForm({
+  form: 'register',
+})(RegisterForm);
 
 
-const LoginFormContainer = ({loginUser, isLoading}) => {
+const RegisterFormContainer = ({registerUser, isLoading}) => {
   const submit = (values) => {
-    loginUser(values);
+    registerUser(values);
   };
 
-  return <LoginFormWithRedux onSubmit={submit} isLoading={isLoading}/>
+  return <RegisterFormWithRedux  onSubmit={submit} isLoading={isLoading}/>
 };
 
-export default connect((state) => ({isLoading: state.User.loading}), {loginUser})(LoginFormContainer);
+export default connect((state) => ({isLoading: state.User.loading}), {registerUser})(RegisterFormContainer);

@@ -17,7 +17,7 @@ function login(req, res, next) {
       else {
         const payload = {id: user.id};
         const token = jwt.sign(payload, SECRET_KEY, {expiresIn: '43200m'});
-        return resolve({message: "ok", token: token, username: user.username, _id: user.id});
+        return resolve({message: "ok", token: token, username: user.username});
       }
     })(req, res, next);
   })
@@ -33,11 +33,13 @@ function logout(req, res) {
 function register(req, res) {
   const {username, password} = req.body;
   return UserService.createUser({username, password})
-    .then(res => {
-      return {message: "ok", token: res.token, username: res.username};
+    .then(user => {
+      const payload = {id: user.id};
+      const token = jwt.sign(payload, SECRET_KEY, {expiresIn: '43200m'});
+      return {message: "ok", token: token, username: user.username};
     })
     .catch(error => {
-      throw new ServerError(error, 500);
+      throw new ServerError(error.message, 500);
     })
 }
 

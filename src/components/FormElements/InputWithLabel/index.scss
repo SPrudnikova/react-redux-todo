@@ -1,0 +1,30 @@
+@import "../../../scss/colors.scss";
+
+.input-with-label {
+  label {
+    font-weight: bolder;
+  }
+
+  input {
+    font-size: 16px;
+    padding: 5px 8px;
+    border: 1px solid #ccc;
+    outline: none;
+    width: 100%;
+    &:active, &:focus {
+      border-color: $primary-color;
+    }
+    &.error-input {
+      border-color: $danger-color;
+    }
+  }
+
+  .error-text {
+    padding-top: 3px;
+    color: $danger-color;
+  }
+  .error-icon {
+    padding-right: 3px;
+    color: $danger-color;
+  }
+}

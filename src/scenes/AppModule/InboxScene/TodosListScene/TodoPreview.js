@@ -4,7 +4,7 @@ import {NavLink} from 'react-router-dom';
 const TodoPreview = ({previewData: {_id, title}}) => (
   <div>
     <NavLink to={{
-      pathname: `/inbox/${_id}`
+      pathname: `/in-progress/${_id}`
     }}>
       <span>{title}</span>
     </NavLink>

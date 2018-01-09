@@ -6,6 +6,7 @@ import {
   USER_LOGOUT,
   SUCCESS,
   FAIL,
+  START
 } from '../actions/ActionTypes';
 
 const UserRecord = new Record({
@@ -22,8 +23,15 @@ const ReducerState = new Record({
 
 const initialState = new ReducerState();
 
-const User = (state = initialState, {type, payload}) => {
+const User = (state = initialState, {type, payload, message}) => {
   switch (type) {
+    case USER_LOGIN + START:
+      return state.withMutations(s => {
+        return s
+          .set('error', null)
+          .set('data', '')
+          .set('loading', true)
+      });
     case USER_LOGIN + SUCCESS:
       return state.withMutations(s => {
         return s
@@ -51,7 +59,7 @@ const User = (state = initialState, {type, payload}) => {
     case USER_REGISTER + FAIL:
       return state.withMutations(s => {
         return s
-          .set('error', "Something goes wrong. Try again please.")
+          .set('error', message)
           .set('data', '')
           .set('loading', false)
       });

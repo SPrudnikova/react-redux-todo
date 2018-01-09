@@ -18,7 +18,7 @@ passport.use(new LocalStrategy({
         return next(err);
       }
       if (!user || !user.checkPassword(password)) {
-        return next(null, false, 'Нет такого пользователя или пароль неверен.');
+        return next(null, false, 'There is no such user or the password is incorrect.');
       }
       return next(null, user);
     });
