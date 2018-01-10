@@ -32,17 +32,10 @@ function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return Promise.resolve(response);
   } else {
-    if (response.status === 401) {
-      return response.json()
-        .then((res) => {
-          throw new Error(res.message)
-        });
-      //return Promise.reject(new Error("Your access token has expired. Please login again."));
-    } else {
-      console.log("API error", response);
-      return response.json()
-        .then((res) => Promise.reject(new Error(res.message)));
-    }
+    return response.json()
+      .then((res) => {
+        throw new Error(res.message)
+      });
   }
 }
 
@@ -59,8 +52,9 @@ export function encodeParams(obj, prefix) {
   return str.join('&');
 }
 
-export function fetchData(url) {
-  return fetch(API_URL + url)
+export function fetchData(url, params = {}) {
+  let paramsURL = Object.keys(params).length > 0 ? `${encodeParams(params)}` : '';
+  return fetch(`${API_URL}${url}?${paramsURL}`)
     .then(checkStatus)
     .then((response) => response.json())
     .then((json) => {
@@ -70,7 +64,7 @@ export function fetchData(url) {
         error.data = json.error.data;
         throw error;
       }
-      return json.data;
+      return json.data? json.data : json;
     });
 }
 
@@ -79,7 +73,7 @@ export function postData(url, opts = {}, params = {}) {
   Object.assign(options, postJSON());
   options.body = JSON.stringify(opts);
   console.log("Post Data", opts);
-  let paramsURL = Object.keys(params).length > 0 ? `&${encodeParams(params)}` : '';
+  let paramsURL = Object.keys(params).length > 0 ? `${encodeParams(params)}` : '';
   console.log("Post url", `${API_URL}${url}?${paramsURL}`, options);
   return fetch(`${API_URL}${url}?${paramsURL}`, options)
     .then(checkStatus)

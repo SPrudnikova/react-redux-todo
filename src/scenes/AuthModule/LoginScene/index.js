@@ -8,7 +8,7 @@ import VerticalDivider from 'components/VerticalDivider';
 const LoginScene = (props) => {
   return (
     <div className="login-scene">
-      <LoginForm />
+      <LoginForm aaaa='hello'/>
 
       <VerticalDivider height="30px"/>
 

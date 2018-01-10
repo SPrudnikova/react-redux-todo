@@ -21,7 +21,7 @@ const controllerHandler = (promise, params) => async (req, res, next) => {
     const result = await promise(...boundParams);
     return res.json(result || { message: 'OK' });
   } catch (error) {
-    return res.status(error.status || 500).send(error); //error handling in express??
+    return res.status(error.status || 500).send(error);
   }
 };
 const c = controllerHandler;
@@ -31,6 +31,7 @@ router.post('/api/login', c(user.login, (req, res, next) => [req, res, next]));
 router.post('/api/logout', c(user.logout, (req, res, next) => [req, res, next]));
 router.post('/api/register', c(user.register, (req, res, next) => [req, res, next]));
 router.post('/api/checkToken', c(user.checkToken, (req, res, next) => [req, res, next]));
+router.get('/api/user/getByName', c(user.findUserByUsername, (req, res, next) => [req, res, next]));
 
 //============== todos ======================
 router.post('/api/todosInProgress', c(todo.getUserInProgressTodos, (req, res, next) => [req, res, next]));

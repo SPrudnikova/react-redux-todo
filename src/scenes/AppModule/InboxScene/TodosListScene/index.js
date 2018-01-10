@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import TodosList from './TodosList';
 import {getTodosData} from '../../../../actions/index';
+import {inprogressTodosSelector} from "selectors";
 
 class TodoListScene extends Component {
 
@@ -23,6 +24,6 @@ TodoListScene.propTypes = {
   todos: ImmutablePropTypes.list.isRequired
 };
 
-const mapStateToProps = ({Todos}) => ({todos: Todos.data});
+const mapStateToProps = (state) => ({todos: inprogressTodosSelector(state)});
 
 export default connect(mapStateToProps, {getTodosData})(TodoListScene);

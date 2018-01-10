@@ -32,11 +32,18 @@ function logout(req, res) {
 
 function register(req, res) {
   const {username, password} = req.body;
-  return UserService.createUser({username, password})
+  return UserService.findUserByUsername(username)
     .then(user => {
-      const payload = {id: user.id};
-      const token = jwt.sign(payload, SECRET_KEY, {expiresIn: '43200m'});
-      return {message: "ok", token: token, username: user.username};
+      if (!user) {
+        return UserService.createUser({username, password})
+          .then(user => {
+            const payload = {id: user.id};
+            const token = jwt.sign(payload, SECRET_KEY, {expiresIn: '43200m'});
+            return {message: "ok", token: token, username: user.username};
+          })
+      } else {
+        throw new ServerError(`User with username '${username}' already exists.`, 500);
+      }
     })
     .catch(error => {
       throw new ServerError(error.message, 500);
@@ -55,9 +62,23 @@ function checkToken(req, res, next) {
   })
 }
 
+function findUserByUsername(req, res, next) {
+  const {username} = req.query;
+  return UserService.findUserByUsername(username)
+    .then(user => {
+      if (user) {
+        return {username: user.username};
+      } else {
+        return {};
+      }
+    })
+
+}
+
 module.exports = {
   login,
   logout,
   register,
   checkToken,
+  findUserByUsername
 };

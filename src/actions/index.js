@@ -1,4 +1,5 @@
 import {replace} from 'react-router-redux';
+import {destroy} from 'redux-form';
 
 import {
   FETCHING_TODOS,
@@ -14,6 +15,7 @@ import {
 } from './ActionTypes';
 import {getUserInProgressTodos, getTodoByUser, addTodo} from "../services/Todos";
 import {userLogin, userRegister, userLogout} from "../services/User";
+import {formNames} from "const/formNames";
 
 
 export const getTodosData = () => (dispatch, getState) => {
@@ -23,14 +25,13 @@ export const getTodosData = () => (dispatch, getState) => {
   dispatch({type: FETCHING_TODOS + START});
 
   return getUserInProgressTodos()
-    .then(
-      response => {
-        dispatch({type: FETCHING_TODOS + SUCCESS, payload: response});
-      },
-      error => {
-        dispatch({type: FETCHING_TODOS + FAIL, payload: error});
-        dispatch(replace('/error'));
-      })
+    .then(response => {
+      dispatch({type: FETCHING_TODOS + SUCCESS, payload: response});
+    })
+    .catch(error => {
+      dispatch({type: FETCHING_TODOS + FAIL, payload: error.message});
+      dispatch(replace('/error'));
+    })
 };
 
 export const selectTodo = (id) => (dispatch) => {
@@ -40,11 +41,11 @@ export const selectTodo = (id) => (dispatch) => {
     .then(
       response => {
         dispatch({type: SELECT_TODO + SUCCESS, payload: response});
-      },
-      error => {
-        dispatch({type: SELECT_TODO + FAIL, payload: error});
-        dispatch(replace('/error'));
       })
+    .catch(error => {
+      dispatch({type: SELECT_TODO + FAIL, payload: error.message});
+      dispatch(replace('/error'));
+    })
 };
 
 export const unSelectTodo = () => ({
@@ -58,9 +59,10 @@ export const loginUser = (data) => (dispatch) => {
       dispatch({type: USER_LOGIN + SUCCESS, payload: response});
       localStorage.setItem('sampleToken', response.token);
       dispatch(replace('/in-progress'));
+      dispatch(destroy(formNames.login));
     })
-    .catch(err => {
-      dispatch({type: USER_LOGIN + FAIL, message: err.message});
+    .catch(error => {
+      dispatch({type: USER_LOGIN + FAIL, message: error.message});
     })
 };
 
@@ -71,9 +73,10 @@ export const registerUser = (data) => (dispatch) => {
       dispatch({type: USER_REGISTER + SUCCESS, payload: response});
       localStorage.setItem('sampleToken', response.token);
       dispatch(replace('/in-progress'));
+      dispatch(destroy(formNames.login));
     })
-    .catch(err => {
-      dispatch({type: USER_REGISTER + FAIL, message: `There is already user with username '${data.username}'`});
+    .catch(error => {
+      dispatch({type: USER_REGISTER + FAIL, message: error.message});
     })
 };
 
@@ -84,8 +87,7 @@ export const logoutUser = () => (dispatch) => {
       dispatch({type: USER_LOGOUT + SUCCESS});
       dispatch(replace('/login'));
     })
-    .catch(err => {
-      console.log('message', err.message);
+    .catch(error => {
       dispatch({type: USER_LOGOUT + FAIL});
     })
 };
@@ -95,8 +97,7 @@ export const addNewTodo = () => dispatch => {
     .then(res => {
       dispatch({type: ADD_TODO + SUCCESS, message: 'Todo was successfully created'});
     })
-    .catch(err => {
-      console.log('message', err.message);
-      dispatch({type: ADD_TODO + FAIL, message: `Todo wasn't created`});
+    .catch(error => {
+      dispatch({type: ADD_TODO + FAIL, message: `Todo wasn't created.`});
     })
 };

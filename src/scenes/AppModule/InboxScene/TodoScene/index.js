@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {selectTodo, unSelectTodo} from '../../../../actions/index';
 import TodoData from "../../../../components/Todo";
+import {selectedTodoSelector} from "selectors";
 
 class MessageContainer extends Component {
 
@@ -22,6 +23,6 @@ class MessageContainer extends Component {
 
 }
 
-const mapStateToProps = ({SelectedTodo: {data}}) => ({SelectedTodo: data});
+const mapStateToProps = (state) => ({SelectedTodo: selectedTodoSelector(state)});
 
 export default connect(mapStateToProps, {selectTodo, unSelectTodo})(MessageContainer);

@@ -7,6 +7,8 @@ import InputWithLabel from "components/FormElements/InputWithLabel";
 import {required, minLength} from "helpers/validationRules";
 import VerticalDivider from "components/VerticalDivider";
 import "scenes/AuthModule/LoginScene/LoginForm/index.scss"
+import {compose} from "redux";
+import {formNames} from "const/formNames";
 
 const LoginForm = (props) => {
   return (
@@ -31,17 +33,29 @@ const LoginForm = (props) => {
   )
 };
 
-const LoginFormWithRedux = reduxForm({
-  form: 'login',
-})(LoginForm);
-
-
-const LoginFormContainer = ({loginUser, isLoading}) => {
-  const submit = (values) => {
-    loginUser(values);
-  };
-
-  return <LoginFormWithRedux onSubmit={submit} isLoading={isLoading}/>
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onSubmit: (values) => {
+      dispatch(loginUser(values))
+    }
+  }
 };
 
-export default connect((state) => ({isLoading: state.User.loading}), {loginUser})(LoginFormContainer);
+const mapStateToProps = () => {
+  return (state) => {
+    return {
+      isLoading: state.User.loading,
+      initialValues: {
+        username: 'Dan20',
+        password: 'Hi20'
+      }
+    }
+  }
+};
+
+const enhancer = compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  reduxForm({form: formNames.login, destroyOnUnmount: false,}),
+);
+
+export default enhancer(LoginForm);
