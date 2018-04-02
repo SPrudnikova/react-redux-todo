@@ -41,6 +41,9 @@ const MessagesData = (state = initialState, {type, payload, message}) => {
     case FETCHING_TODOS + FAIL:
       return state.withMutations(s => s.set('loading', false).set('error', message));
 
+    case ADD_TODO + SUCCESS:
+      return state.withMutations(s => s.set('data', state.data.push(new TodoRecord(payload))));
+
     default:
       return state;
   }

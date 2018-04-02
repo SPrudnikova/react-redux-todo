@@ -4,6 +4,7 @@ import {
   USER_LOGIN,
   USER_REGISTER,
   USER_LOGOUT,
+  USER_FETCH,
   SUCCESS,
   FAIL,
   START
@@ -11,14 +12,13 @@ import {
 
 const UserRecord = new Record({
   username: '',
-  token: '',
   _id: ''
 });
 
 const ReducerState = new Record({
   data: '',
-  loading: false,
-  error: null
+  loading: true,
+  error: null,
 });
 
 const initialState = new ReducerState();
@@ -70,6 +70,30 @@ const User = (state = initialState, {type, payload, message}) => {
           .set('error', "Something goes wrong. Try again please.")
           .set('loading', false)
       });
+
+    case USER_LOGOUT + SUCCESS:
+      return state.withMutations(s => {
+        return s
+          .set('error', null)
+          .set('loading', false)
+      });
+
+    case USER_FETCH + SUCCESS: {
+      return state.withMutations(s => {
+        return s
+          .set('data', new UserRecord(payload))
+          .set('loading', false)
+      });
+    }
+
+    case USER_FETCH + FAIL: {
+      return state.withMutations(s => {
+        return s
+          .set('data', '')
+          .set('loading', false)
+          .set('error', "Something goes wrong. Try again please.")
+      });
+    }
 
     default:
       return state;

@@ -9,7 +9,6 @@ import RegisterScene from "./RegisterScene";
 
 
 const AuthModule = (props) => {
-
   return (
     <div className="root">
       <Switch>

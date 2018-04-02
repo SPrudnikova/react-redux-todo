@@ -9,7 +9,7 @@ function findTodoByUser (filter) {
 }
 
 function createTodo (todo) {
-  TodoModel.create(todo);
+  return TodoModel.create(todo);
 }
 
 module.exports = {

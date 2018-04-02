@@ -12,6 +12,10 @@ export function userLogout() {
   return postData('logout');
 }
 
+export function fetchUser () {
+  return fetchData('getActiveUser');
+}
+
 export function findUserByUsername(username) {
   return fetchData('user/getByName', {username});
 }

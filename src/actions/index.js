@@ -10,11 +10,12 @@ import {
   USER_LOGIN,
   USER_REGISTER,
   USER_LOGOUT,
+  USER_FETCH,
   SUCCESS,
   FAIL
 } from './ActionTypes';
 import {getUserInProgressTodos, getTodoByUser, addTodo} from "../services/Todos";
-import {userLogin, userRegister, userLogout} from "../services/User";
+import {userLogin, userRegister, userLogout, fetchUser} from "../services/User";
 import {formNames} from "const/formNames";
 
 
@@ -57,7 +58,6 @@ export const loginUser = (data) => (dispatch) => {
   return userLogin(data)
     .then(response => {
       dispatch({type: USER_LOGIN + SUCCESS, payload: response});
-      localStorage.setItem('sampleToken', response.token);
       dispatch(replace('/in-progress'));
       dispatch(destroy(formNames.login));
     })
@@ -71,7 +71,6 @@ export const registerUser = (data) => (dispatch) => {
   return userRegister(data)
     .then(response => {
       dispatch({type: USER_REGISTER + SUCCESS, payload: response});
-      localStorage.setItem('sampleToken', response.token);
       dispatch(replace('/in-progress'));
       dispatch(destroy(formNames.login));
     })
@@ -83,7 +82,6 @@ export const registerUser = (data) => (dispatch) => {
 export const logoutUser = () => (dispatch) => {
   return userLogout()
     .then(res => {
-      localStorage.removeItem('sampleToken');
       dispatch({type: USER_LOGOUT + SUCCESS});
       dispatch(replace('/login'));
     })
@@ -92,10 +90,20 @@ export const logoutUser = () => (dispatch) => {
     })
 };
 
+export const getUser = () => (dispatch) => {
+  return fetchUser()
+    .then(user => {
+      dispatch({type: USER_FETCH + SUCCESS, payload: user});
+    })
+    .catch(error => {
+      dispatch({type: USER_FETCH + FAIL});
+    })
+};
+
 export const addNewTodo = () => dispatch => {
   return addTodo()
     .then(res => {
-      dispatch({type: ADD_TODO + SUCCESS, message: 'Todo was successfully created'});
+      dispatch({type: ADD_TODO + SUCCESS, message: 'Todo was successfully created', payload: res});
     })
     .catch(error => {
       dispatch({type: ADD_TODO + FAIL, message: `Todo wasn't created.`});

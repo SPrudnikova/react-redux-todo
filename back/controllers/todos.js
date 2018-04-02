@@ -1,44 +1,35 @@
 const {TodoService} = require("../services");
-const passport = require("../services/auth");
 const ObjectId = require('mongoose').Types.ObjectId;
+const {ServerError} = require('../helpers/server');
 
 
-function getUserInProgressTodos(req, res, next) {
-  return new Promise((resolve, reject) => {
-    passport.authenticate('jwt', function (err, user) {
-      if (user) {
-        resolve(TodoService.findInProgressTodosByUser({userId: user.id}));
-      } else {
-        return reject({status: 401, message: 'Auth failed'});
-      }
-    })(req, res, next);
-  })
+function getUserInProgressTodos (req) {
+  if (req.user) {
+    return TodoService.findInProgressTodosByUser({ userId: req.user._id });
+  }
+  else {
+    throw new ServerError('Auth failed', 401);
+  }
 }
 
-function getTodoByUser(req, res, next) {
+function getTodoByUser(req) {
   const id = req.params.id;
   const query = {_id: new ObjectId(id)};
-  return new Promise((resolve, reject) => {
-    passport.authenticate('jwt', function (err, user) {
-      if (user) {
-        resolve(TodoService.findTodoByUser(query));
-      } else {
-        return reject({status: 401, message: 'Auth failed'});
-      }
-    })(req, res, next);
-  })
+  if (req.user) {
+    return TodoService.findTodoByUser(query);
+  }
+  else {
+    throw new ServerError('Auth failed', 401);
+  }
 }
 
-function addTodo (req, res, next) {
-  return new Promise((resolve, reject) => {
-    passport.authenticate('jwt', function (err, user) {
-      if (user) {
-        resolve(TodoService.createTodo({...req.body, userId: user.id}));
-      } else {
-        return reject({status: 401, message: 'Auth failed'});
-      }
-    })(req, res, next);
-  })
+function addTodo (req) {
+  if (req.user) {
+    return TodoService.createTodo({...req.body, userId: req.user._id});
+  }
+  else {
+    throw new ServerError('Auth failed', 401);
+  }
 }
 
 module.exports = {

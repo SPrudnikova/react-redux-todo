@@ -10,7 +10,6 @@ import Navigation from "../../components/Navigation";
 
 
 const AppModule = () => {
-
     return (
       <div className="root">
         <Navigation navItems={MAIN_NAVIGATION}/>
@@ -28,7 +27,6 @@ const AppModule = () => {
         </div>
       </div>
     )
-
 };
 
 export default AppModule;

@@ -6,8 +6,8 @@ const postJSON = () => {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + localStorage.getItem('sampleToken')
-    }
+    },
+    credentials: 'include'
   }
 };
 
@@ -54,7 +54,7 @@ export function encodeParams(obj, prefix) {
 
 export function fetchData(url, params = {}) {
   let paramsURL = Object.keys(params).length > 0 ? `${encodeParams(params)}` : '';
-  return fetch(`${API_URL}${url}?${paramsURL}`)
+  return fetch(`${API_URL}${url}?${paramsURL}`, { credentials: 'include' })
     .then(checkStatus)
     .then((response) => response.json())
     .then((json) => {

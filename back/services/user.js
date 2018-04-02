@@ -8,7 +8,12 @@ function findUserByUsername(username) {
   return User.findOne({username: username});
 }
 
+function findUserById(id) {
+  return User.findOne({_id: id});
+}
+
 module.exports = {
   createUser,
   findUserByUsername,
+  findUserById,
 };

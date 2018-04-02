@@ -1,48 +1,39 @@
 const passport = require("passport");
-const LocalStrategy = require('passport-local'); //локальная стратегия авторизации
-const JwtStrategy = require('passport-jwt').Strategy; // авторизация через JWT
-const ExtractJwt = require('passport-jwt').ExtractJwt; // авторизация через JWT
+const { User } = require("../models/User");
+const LocalStrategy = require("passport-local").Strategy;
 
-const {User} = require('../models/User');
-const {SECRET_KEY} = require("../constants");
+module.exports = function () {
+  passport.serializeUser(function (user, done) {
+    done(null, user._id);
+  });
+  passport.deserializeUser(function (id, done) {
+    User.findById(id, function (err, user) {
+      done(err, user);
+    });
+  });
+};
 
-//============passport local============
-passport.use(new LocalStrategy({
-    usernameField: 'username',
-    passwordField: 'password',
-    session: false
-  },
-  function (username, password, next) {
-    User.findOne({username}, (err, user) => {
+passport.use("login", new LocalStrategy(
+  function (username, password, done) {
+    User.findOne({ username: username }, function (err, user) {
       if (err) {
-        return next(err);
+        return done(err);
       }
-      if (!user || !user.checkPassword(password)) {
-        return next(null, false, 'There is no such user or the password is incorrect.');
+      if (!user) {
+        return done(null, false,
+          { message: "No user has that username!" });
       }
-      return next(null, user);
+      user.checkPassword(password, (err, isMatch) => {
+        if (err) {
+          return done(err);
+        }
+        if (isMatch) {
+          return done(null, user);
+        } else {
+          return done(null, false,
+            { message: "Invalid password." });
+        }
+      });
     });
   })
 );
-
-
-//============passport jwt============
-const jwtOptions = {};
-jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-jwtOptions.secretOrKey = SECRET_KEY;
-
-passport.use(new JwtStrategy(jwtOptions, function (payload, next) {
-    User.findById(payload.id, (err, user) => {
-      if (err) {
-        return done(err)
-      }
-      if (user) {
-        next(null, user)
-      } else {
-        next(null, false)
-      }
-    })
-  })
-);
-
-module.exports = passport;

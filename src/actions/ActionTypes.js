@@ -5,6 +5,7 @@ export const ADD_TODO = 'ADD_TODO';
 export const USER_LOGIN = 'USER_LOGIN';
 export const USER_REGISTER = 'USER_REGISTER';
 export const USER_LOGOUT = 'USER_LOGOUT';
+export const USER_FETCH = 'USER_FETCH';
 
 export const START = '_START';
 export const SUCCESS = '_SUCCESS';
